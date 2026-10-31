@@ -131,7 +131,8 @@ A dispatcher routes the payload to one of three family modules, each of which ma
     \draw[arr] (guard) -- (out);
     \draw[arr, dashed, gray] (out.south) |- ++(0,-1.25) -| node[pos=0.25, below, font=\scriptsize, text=black] {next turn: history grows, beliefs rebuilt from scratch} (in.south);
   \end{tikzpicture}
-  \caption{\agentname{} decision pipeline. Each turn is a pure function of the visible payload; no LLM or cross-game memory is used.}
+  \caption{\agentname{} decision pipeline.
+  Each turn is a pure function of the visible payload; no LLM or cross-game memory is used.}
   \label{fig:pipeline}
 \end{figure}
 
@@ -275,7 +276,8 @@ We select offers by maximizing
        +(1-P_t(y))C_t(y),
     \label{eq:negotiation-choice}
 \)
-where $C_t(y)$ is the discounted one-step value after rejection. Candidates include a utility grid, the concession reference, observed opponent offers, and belief breakpoints. The policy also prevents concession reversal.
+where $C_t(y)$ is the discounted one-step value after rejection.
+Candidates include a utility grid, the concession reference, observed opponent offers, and belief breakpoints. The policy also prevents concession reversal.
 
 Incoming offers are evaluated against the certainty-equivalent value of continuing, rather than simply against the next intended counteroffer.
 The policy accepts sufficiently strong profitable offers, becomes more conservative about continuation after repeated stagnant behavior, and walks away when known valuations rule out positive-surplus trade or an uncapped negotiation remains persistently individually irrational.
