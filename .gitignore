@@ -24,3 +24,7 @@ paper/*.fdb_latexmk
 paper/*.fls
 paper/*.out
 paper/*.synctex.gz
+
+# Internal working notes
+HANDOVER.md
+SUBMISSION_CHECKLIST.md
