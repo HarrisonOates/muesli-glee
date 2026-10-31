@@ -20,6 +20,7 @@
 \newcommand{\agentname}{\textsc{Muesli}}
 \newcommand{\competitionname}{\textsc{Granola}}
 \newcommand{\challengername}{\textsc{Buckwheat}}
+\newcommand{\milletname}{\textsc{Millet}}
 \newcommand{\repourl}{\url{https://github.com/HarrisonOates/muesli-glee}}
 \newcommand{\agentid}{\texttt{2389edc2-4b2c-4052-b960-0c7f9d6317ec}}
 
@@ -37,7 +38,7 @@
 \begin{abstract}
 %How much of a language-based economic game actually requires a language model?
 We present a symbolic-first GLEE agent that uses explicit models of incentives, uncertainty, and opponent behavior rather than an LLM at decision time.
-Run in the competition as the agents \competitionname{} and \challengername{}, it finished 35th of 198 agents overall, including 10th in bargaining, 35th in persuasion, and 62nd in negotiation.
+Run in the competition as the agents \competitionname{}, \challengername{}, and \milletname{}, it finished 35th of 198 agents overall, including 10th in bargaining, 35th in persuasion, and 62nd in negotiation.
 Bargaining performed strongly because much of its strategically relevant state is exposed through structured actions, while persuasion remained competitive using Bayesian signal reasoning and lightweight deterministic language processing.
 Negotiation was the clear weakness despite a richer symbolic opponent model.
 We argue that this contrast suggests a useful boundary: symbolic methods can go far when strategic information is structurally exposed, while language models may be most valuable for interpreting information that remains latent in dialogue.
@@ -58,7 +59,7 @@ We call the resulting architecture \agentname{} (\emph{Model-based Utility Estim
 LLMs were used during development to assist with coding and tuning, but not to select actions during competition play.
 
 
-We entered it as two agents, \competitionname{} and a near-identical preregistered challenger, \challengername{} (Section~\ref{sec:discussion}).
+We entered it as three near-identical agents: \competitionname{} and two challengers, \challengername{} and \milletname{}, that tested narrow changes (Section~\ref{sec:discussion}).
 This comparatively simple philosophy went surprisingly far.
 Among the 198 agents on the final leaderboard, our submissions finished 35th overall and, most notably, 10th in bargaining.
 More unexpectedly, we finished 35th in persuasion, despite persuasion being perhaps the environment in which natural language appears most intrinsically important.
@@ -69,7 +70,7 @@ We argue that this pattern, rather than the bargaining result alone, is the most
 
 
 \begin{table}[t]
-  \caption{Final leaderboard positions among the 198 agent entries (human participants excluded), taking the better of \competitionname{} and \challengername{} in each scope.
+  \caption{Final leaderboard positions among the 198 agent entries (human participants excluded), taking our best agent in each scope.
   Lower is better.}
   \label{tab:ranks}
   \centering
@@ -102,7 +103,7 @@ We describe the symbolic mechanisms used by the agents and use their differing c
 \section{Agent design}
 
 \paragraph{Pipeline.}
-Figure~\ref{fig:pipeline} shows the decision pipeline shared by both agents.
+Figure~\ref{fig:pipeline} shows the decision pipeline shared by all three agents.
 Each turn, the GLEE SDK delivers the game configuration, full public history, any opponent-type disclosure, and the valid actions.
 The agent is stateless: it rebuilds its beliefs from this history on every call, so every decision can be replayed exactly from the logged payload.
 A dispatcher routes the payload to one of three family modules, each of which maps the visible state to a small explicit belief, scores candidate actions by expected utility, and passes the choice through hard legality and individual-rationality guards before an optional deterministic message is attached.
@@ -122,7 +123,7 @@ A dispatcher routes the payload to one of three family modules, each of which ma
     \node[fam, below=of neg] (pers) {\textbf{Persuasion}\\[-1pt]{\scriptsize seller: pooling budget $\bar q$;\\[-2pt] buyer: posterior vs.\ $\lambda$}};
     \node[box, right=6mm of neg, text width=1.9cm] (guard) {Guards\\[-1pt]{\scriptsize legality, IR,\\[-2pt] monotone concession}};
     \node[box, right=of guard, text width=1.65cm] (out) {Action\\[-1pt]{\scriptsize + template\\[-2pt] message}};
-    \node[draw, dashed, rounded corners=2pt, fit=(barg)(pers), inner sep=2pt, label={[font=\scriptsize]above:{\challengername{} overrides (few cells)}}] (fams) {};
+    \node[draw, dashed, rounded corners=2pt, fit=(barg)(pers), inner sep=2pt, label={[font=\scriptsize]above:{challenger overrides (few cells)}}] (fams) {};
     \draw[arr] (in) -- (disp);
     \foreach \f in {barg,neg,pers} {
       \draw[arr] (disp.east) -- (\f.west);
@@ -277,7 +278,8 @@ We select offers by maximizing
     \label{eq:negotiation-choice}
 \)
 where $C_t(y)$ is the discounted one-step value after rejection.
-Candidates include a utility grid, the concession reference, observed opponent offers, and belief breakpoints. The policy also prevents concession reversal.
+Candidates include a utility grid, the concession reference, observed opponent offers, and belief breakpoints.
+The policy also prevents concession reversal.
 
 Incoming offers are evaluated against the certainty-equivalent value of continuing, rather than simply against the next intended counteroffer.
 The policy accepts sufficiently strong profitable offers, becomes more conservative about continuation after repeated stagnant behavior, and walks away when known valuations rule out positive-surplus trade or an uncapped negotiation remains persistently individually irrational.
@@ -332,14 +334,14 @@ At exact public-prior indifference, the agent is deliberately conservative and r
 \section{Discussion}
 \label{sec:discussion}
 
-\paragraph{Two agents.}
-\competitionname{} ran the policy described above.
-\challengername{} was a preregistered challenger whose hypotheses, budget, and stopping rules were frozen before its first live game.
-It changed three narrow cells (accepting exactly repeated positive bargaining offers under discounting; a 55\%/45\% surplus bracket in uncapped, unknown-horizon complete-information negotiation; and extra persuasion template coverage with more caution at exact buyer indifference) and otherwise delegated to \competitionname{}.
-Modules that held up were later promoted into \competitionname{}, so the two agents differ only marginally.
+\paragraph{Three agents.}
+\competitionname{} ran the policy above; two challengers tested narrow changes against it.
+\challengername{}, preregistered before its first live game, changed three cells (accepting exactly repeated bargaining offers under discounting, a 55\%/45\% surplus bracket in uncapped complete-information negotiation, and extra persuasion template coverage) and otherwise delegated to \competitionname{}.
+\milletname{} isolated one negotiation change, accepting profitable offers more readily after opponent evidence in capped private-value games (continuation multiplier 0.70 rather than 0.85).
+Modules that held up were promoted into \competitionname{}, so the three agents differ only marginally.
 
 \paragraph{Development process.}
-Development mainly improved how uncertainty was represented: bargaining moved from hard reservation bounds to distinguishing reservation, aspiration, and strategic delay; negotiation from pure time-dependent concession to reasoning over latent valuations; and persuasion gained strategically distinct templates and conservative text classification.
+Development mainly improved how uncertainty was represented: bargaining moved from hard reservation bounds to distinguishing reservation, aspiration, and delay; negotiation from pure concession schedules to latent valuations.
 
 \paragraph{Results.}
 The results suggest that the usefulness of language depends less on whether communication is present than on how much strategically relevant information structured actions already expose.
@@ -351,8 +353,8 @@ Because decisions are replayable from the visible history, these invariants are 
 
 
 \paragraph{Limitations and reproducibility.}
-Leaderboard results are observational and cannot isolate the effect of language; a natural follow-up is to compare negotiation with and without language-based opponent modelling.
-Code for both agents, tests, and aggregate evidence is at \repourl{}; game transcripts are withheld as they contain other participants' messages.
+Leaderboard results are observational and cannot isolate the effect of language.
+Code for all three agents and aggregate evidence is at \repourl{}; transcripts are withheld as they contain other participants' messages.
 
 
 \bibliographystyle{plainnat}
