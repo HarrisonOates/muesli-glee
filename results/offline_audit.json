@@ -1,0 +1,33 @@
+{
+  "description": "Randomized legal-state audit; not a leaderboard-performance estimate.",
+  "profile": "granola",
+  "seed": 20260823,
+  "generated_states": 12000,
+  "violations": 0,
+  "families": {
+    "bargaining": {
+      "states": 4000,
+      "offers": 2000,
+      "decisions": 2000,
+      "violations": 0
+    },
+    "negotiation": {
+      "states": 4000,
+      "offers": 2000,
+      "decisions": 2000,
+      "private_evidence_decisions": 404,
+      "violations": 0
+    },
+    "persuasion": {
+      "states": 4000,
+      "seller_states": 2000,
+      "buyer_states": 2000,
+      "violations": 0
+    }
+  },
+  "behavioral_probes": {
+    "bargaining_offers_feasible_and_state_sensitive": true,
+    "negotiation_asks_concede_monotonically": true,
+    "buyer_reacts_to_bad_recommendations": true
+  }
+}

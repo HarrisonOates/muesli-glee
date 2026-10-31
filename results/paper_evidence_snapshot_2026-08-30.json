@@ -1,0 +1,73 @@
+{
+  "description": "Non-sensitive aggregate evidence snapshot used by the GLEE competition paper.",
+  "generated_at": "2026-08-30T09:01:10Z",
+  "agent": {
+    "name": "Granola",
+    "public_id": "2389edc2-4b2c-4052-b960-0c7f9d6317ec"
+  },
+  "platform_stats": {
+    "observed_at": "2026-08-30T08:58:48Z",
+    "scores": {
+      "bargaining": {
+        "display_rating": 2159.93,
+        "games_played": 3797
+      },
+      "negotiation": {
+        "display_rating": 1841.92,
+        "games_played": 3988
+      },
+      "persuasion": {
+        "display_rating": 1930.30,
+        "games_played": 3791
+      }
+    },
+    "active_games": 4,
+    "qualification": "Read-only pre-close snapshot; not final standings."
+  },
+  "private_archive": {
+    "observed_at": "2026-08-30T09:01:10Z",
+    "game_records": 11584,
+    "move_records": 106796,
+    "platform_rejected_actions": 0,
+    "strategy_errors": 0,
+    "transport_errors": 9,
+    "mean_observation_to_response_seconds": 0.303,
+    "maximum_observation_to_response_seconds": 14.616,
+    "qualification": "The archive is private because player-visible payloads contain opponent messages. Aggregate counts contain no transcripts, game identifiers, or opponent names."
+  },
+  "offline_verification": {
+    "tests_passed": 231,
+    "audit_artifact": "results/offline_audit.json",
+    "audit_seed": 20260823,
+    "randomized_states": 12000,
+    "guard_violations": 0
+  },
+  "frozen_early_cohort": {
+    "artifact": "results/live_continuation_run_2026-08-23.json",
+    "games": 59,
+    "moves": 683,
+    "invalid_moves": 0,
+    "strategy_errors": 0,
+    "transport_errors": 0,
+    "outcomes": {
+      "bargaining": {
+        "agreement": 19
+      },
+      "negotiation": {
+        "agreement": 12,
+        "no_deal": 3,
+        "walked_away": 5
+      },
+      "persuasion": {
+        "completed": 20
+      }
+    }
+  },
+  "development_evidence": [
+    "results/live_final_cohort_2026-08-23.json",
+    "results/live_challenger_cohort_2026-08-23.json",
+    "results/granola_negotiation_promotion_2026-08-28.json",
+    "results/granola_strict_gain_candidate_2026-08-29.json",
+    "results/granola_competitive_floor_candidate_2026-08-29.json"
+  ]
+}

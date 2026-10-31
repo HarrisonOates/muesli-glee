@@ -1,0 +1,26 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Secrets and local run artefacts
+.env
+.env.challenger
+.env.buckwheat
+.env.millet
+*.log
+.local/
+pytest-of-*/
+
+# LaTeX build artefacts
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.out
+paper/*.synctex.gz

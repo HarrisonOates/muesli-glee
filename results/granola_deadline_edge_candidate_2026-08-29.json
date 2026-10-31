@@ -1,0 +1,68 @@
+{
+  "agent_name": "Granola",
+  "date": "2026-08-29",
+  "candidate": "DeadlineEdge",
+  "status": "offline_validated_pending_live_cohort",
+  "baseline": {
+    "policy_version": "sha256:41b5d849e9a142b8",
+    "live_negotiation_rating": 1865.13,
+    "games_played": 2581
+  },
+  "candidate_policy_version": "sha256:fe8944c6aebdfcf8",
+  "change": {
+    "scope": "Complete-information negotiation when Granola owns the final proposal and gains from trade are strictly positive.",
+    "old_own_surplus_demand": 0.475,
+    "new_own_surplus_demand": 0.99,
+    "opponent_surplus_buffer": 0.01,
+    "monotonicity_guard": "If Granola previously demanded less, retain that earlier lower demand rather than reverse a concession.",
+    "unchanged": [
+      "all decision actions",
+      "private-value proposals",
+      "nonterminal proposals",
+      "nonpositive-surplus states"
+    ]
+  },
+  "archive_evidence": {
+    "granola_terminal_public_offers": 133,
+    "granola_terminal_public_agreements": 127,
+    "historical_acceptance_rate_at_0.475": 0.954887,
+    "accepted_terminal_public_offers_received": 96,
+    "received_offers_demanding_at_least_0.90_for_opponent": 37,
+    "received_agent_offers": {
+      "games": 44,
+      "at_least_0.90_demand": 23,
+      "mean_opponent_demand": 0.6905
+    },
+    "received_hidden_offers": {
+      "games": 52,
+      "at_least_0.90_demand": 14,
+      "mean_opponent_demand": 0.6388
+    },
+    "same_observation_replay": {
+      "eligible_offer_states": 181,
+      "divergences": 181,
+      "all_divergences_increase_own_demand": true,
+      "warning": "Replay measures action scope, not counterfactual opponent acceptance."
+    }
+  },
+  "risk_model": {
+    "legacy_expected_normalized_payoff_using_historical_acceptance": 0.453571,
+    "candidate_break_even_acceptance_rate": 0.458153,
+    "synthetic_sweep_result": "neutral",
+    "synthetic_sweep_limitation": "The development simulator does not model the platform's terminal offer followed by the receiver decision, so it provides no evidence for or against DeadlineEdge."
+  },
+  "verification": {
+    "tests_passed": 227,
+    "ruff": "passed",
+    "randomized_states": 12000,
+    "guard_violations": 0
+  },
+  "live_gate": {
+    "initial_target_games": 30,
+    "rollback_if": [
+      "any invalid move or strategy error",
+      "terminal public-offer acceptance is below 0.50 after at least four activations",
+      "configuration-stratified normalized payoff is materially below the 0.475-demand baseline"
+    ]
+  }
+}

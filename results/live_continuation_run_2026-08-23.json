@@ -1,0 +1,103 @@
+{
+  "run_type": "three-family continuation run",
+  "date": "2026-08-23",
+  "policy_version": "sha256:7ab70e7b272f3274",
+  "agent": {
+    "name": "Granola",
+    "public_id": "2389edc2-4b2c-4052-b960-0c7f9d6317ec"
+  },
+  "pre_run_stats": {
+    "bargaining": {"display_rating": 1052.68, "games_played": 15},
+    "negotiation": {"display_rating": 1033.45, "games_played": 17},
+    "persuasion": {"display_rating": 1008.04, "games_played": 17}
+  },
+  "post_run_stats": {
+    "bargaining": {"display_rating": 1083.75, "games_played": 27},
+    "negotiation": {"display_rating": 1097.95, "games_played": 28},
+    "persuasion": {"display_rating": 1091.89, "games_played": 28},
+    "active_games": 0
+  },
+  "display_rating_change": {
+    "bargaining": 31.07,
+    "negotiation": 64.5,
+    "persuasion": 83.85,
+    "overall_equal_weight_average": 59.81
+  },
+  "run_outcomes": {
+    "bargaining": {
+      "games": 12,
+      "outcomes": {"agreement": 12},
+      "moves": 118,
+      "highlights": {
+        "agreements_by_our_acceptance": 9,
+        "agreements_by_opponent_acceptance": 3,
+        "rejects_beneficial_relative_to_realized_payoff": 50,
+        "rejects_equal_relative_to_realized_payoff": 1,
+        "rejects_costly_relative_to_realized_payoff": 1,
+        "proposals_accepted": 3,
+        "proposals_made": 57,
+        "mean_discounted_payoff_fraction_of_pot": 0.4909
+      },
+      "review": "The only costly reject lost 0.4813% of the pot. Proposal acceptance remains a calibration watch item, but three adapted proposals closed deals and proposal anchoring is not causally identified."
+    },
+    "negotiation": {
+      "games": 11,
+      "outcomes": {"agreement": 7, "no_deal": 1, "walked_away": 3},
+      "moves": 68,
+      "highlights": {
+        "identifiable_positive_surplus_games": 6,
+        "positive_surplus_agreements": 6,
+        "mean_own_surplus_share": 0.4482,
+        "surplus_weighted_own_share": 0.3872,
+        "identifiable_missed_positive_trades": 0
+      },
+      "review": "All positive-surplus cases traded; structural nontrades avoided losses, and one zero-surplus opponent error gave Granola a positive 890.72 payoff."
+    },
+    "persuasion": {
+      "games": 11,
+      "outcomes": {"completed": 11},
+      "moves": 220,
+      "highlights": {
+        "buyer_games": 6,
+        "seller_games": 5,
+        "positive_payoff_games": 8,
+        "zero_payoff_games": 2,
+        "negative_payoff_games": 1,
+        "purchased_high": 33,
+        "purchased_low": 6,
+        "classified_buyer_messages": 112,
+        "buyer_messages": 120
+      },
+      "review": "The sole negative game was a high-variance, ex-ante-positive purchase at exact prior indifference. The high-grade/serviceable parser gap appeared once without revealed counterfactual labels and did not recur."
+    }
+  },
+  "run_health": {
+    "games": 34,
+    "moves": 406,
+    "invalid_moves": 0,
+    "strategy_errors": 0,
+    "transport_errors": 0,
+    "reconciliation_errors": 0,
+    "unresolved_games": 0,
+    "mixed_policy_games": 0,
+    "mean_observation_to_response_seconds": 0.3959,
+    "max_observation_to_response_seconds": 2.137,
+    "exit_reason": "sdk-returned-and-drained"
+  },
+  "full_archive_after_run": {
+    "games": 59,
+    "moves": 683,
+    "invalid_moves": 0,
+    "strategy_errors": 0,
+    "transport_errors": 0,
+    "unresolved_games": 0,
+    "mixed_policy_games": 0,
+    "outcomes": {
+      "bargaining": {"agreement": 19},
+      "negotiation": {"agreement": 12, "no_deal": 3, "walked_away": 5},
+      "persuasion": {"completed": 20}
+    }
+  },
+  "interpretation": "This run provides strong operational and behavioral support for retaining all three current policies. Ratings are configuration-relative observations rather than causal estimates, and isolated counterfactuals remain watch items rather than tuning triggers.",
+  "privacy_note": "The committed artifact excludes raw messages, game identifiers, opponent names, and transcripts. Full player-visible traces remain in the ignored owner-readable SQLite archive."
+}

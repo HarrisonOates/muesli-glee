@@ -1,0 +1,32 @@
+{
+  "run_type": "bounded live smoke run",
+  "date": "2026-08-23",
+  "agent": {
+    "name": "Granola",
+    "public_id": "2389edc2-4b2c-4052-b960-0c7f9d6317ec"
+  },
+  "requested_run": {
+    "concurrency": 1,
+    "max_games": 3,
+    "game_families": [
+      "bargaining",
+      "negotiation",
+      "persuasion"
+    ]
+  },
+  "post_run_stats": {
+    "bargaining": {"display_rating": 1010.45, "games_played": 3},
+    "negotiation": {"display_rating": 1006.74, "games_played": 3},
+    "persuasion": {"display_rating": 998.75, "games_played": 3},
+    "active_games": 0
+  },
+  "observability_note": "The SDK logged five games that ended on Granola's own move; four additional scored games ended on opponent moves. Platform stats are authoritative.",
+  "locally_observed_completed_games": [
+    {"family": "bargaining", "role": "player_1", "payoff": 489189.15, "outcome": "agreement", "round": 2},
+    {"family": "negotiation", "role": "player_2", "payoff": 64.0, "outcome": "agreement", "round": 1},
+    {"family": "bargaining", "role": "player_2", "payoff": 4800.0, "outcome": "agreement", "round": 1},
+    {"family": "negotiation", "role": "player_2", "payoff": 73344.0, "outcome": "agreement", "round": 3},
+    {"family": "persuasion", "role": "player_2", "payoff": -5000.0, "outcome": "completed", "rounds_played": 20, "rounds_bought": 8, "bought_high": 6, "bought_low": 2}
+  ],
+  "agent_move_errors_observed": 0
+}

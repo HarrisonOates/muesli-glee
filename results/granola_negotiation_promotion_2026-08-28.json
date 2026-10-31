@@ -1,0 +1,81 @@
+{
+  "agent_name": "Granola",
+  "date": "2026-08-28",
+  "candidate": "MilletPrivateEvidenceAcceptance",
+  "status": "promoted_with_monitoring",
+  "granola_policy_version": "sha256:41b5d849e9a142b8",
+  "scope": {
+    "family": "negotiation",
+    "complete_information": false,
+    "horizon_known": true,
+    "max_rounds_required": true,
+    "history_evidence_required": true,
+    "change": "Use a 0.70 rather than 0.85 certainty-equivalent multiplier when comparing a profitable incoming offer with the modeled value of another counteroffer.",
+    "unchanged_cells": [
+      "opening decisions without history",
+      "complete-information negotiation",
+      "uncapped negotiation",
+      "offer generation and concession schedule",
+      "final-round profitability guard"
+    ]
+  },
+  "live_evidence": {
+    "millet_rating_cohorts": [
+      {
+        "games_before": 30,
+        "games_after": 107,
+        "rating_before": 983.36,
+        "rating_after": 1069.32
+      },
+      {
+        "games_before": 107,
+        "games_after": 173,
+        "rating_before": 1069.32,
+        "rating_after": 1161.26
+      },
+      {
+        "games_before": 173,
+        "games_after": 183,
+        "rating_before": 1161.26,
+        "rating_after": 1197.11,
+        "telemetry_outcomes": {
+          "agreement": 8,
+          "walked_away": 2
+        }
+      }
+    ],
+    "millet_cumulative": {
+      "games": 153,
+      "rating_change": 213.75
+    },
+    "unpaired_comparator_warning": "Ratings are configuration-relative and matchmaking was not randomized; the repeated direction is evidence for a narrow promotion, not a causal effect estimate."
+  },
+  "same_observation_replay": {
+    "description": "Replay the promoted 0.70 trigger and legacy 0.85 trigger on archived completed-game decisions.",
+    "eligible_decisions": 858,
+    "divergences": 16,
+    "transitions": {
+      "RejectOffer->AcceptOffer": 16
+    },
+    "divergence_rate": 0.018648,
+    "warning": "Replay measures action scope only; opponent responses to counterfactual actions are unobserved."
+  },
+  "synthetic_stress_test": {
+    "seed": 20260824,
+    "scenarios": 50,
+    "opponents_per_scenario": 5,
+    "promoted_mean_normalized_payoff": 0.2669510583385919,
+    "legacy_mean_normalized_payoff": 0.267320686945228,
+    "promoted_agreement_rate": 0.992,
+    "legacy_agreement_rate": 0.992,
+    "interpretation": "The small algorithmic-opponent sweep does not show a payoff gain and estimates a 0.00037 normalized-payoff cost; it is a stress test rather than a leaderboard model."
+  },
+  "verification": {
+    "tests_passed": 225,
+    "ruff": "passed",
+    "randomized_states": 12000,
+    "private_evidence_decisions": 404,
+    "guard_violations": 0
+  },
+  "monitoring_gate": "Retain only if capped private-value agreement and normalized-payoff strata do not deteriorate in the next Granola cohort."
+}

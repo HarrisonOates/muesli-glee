@@ -1,0 +1,130 @@
+{
+  "agent_name": "Buckwheat",
+  "agent_id": "2fd1b197-88ec-4423-98fe-6f5dfdfa8391",
+  "date": "2026-08-23",
+  "policy_version": "sha256:1da5f4f3d02cd86d",
+  "preregistration": "results/challenger_preregistration_2026-08-23.json",
+  "status": "completed_and_drained",
+  "target_semantics": "Each family used SDK max_games=10 at concurrency 1. Games ending on the opponent move did not advance the SDK counter, so realized family denominators were larger.",
+  "overall": {
+    "completed_games": 55,
+    "moves": 477,
+    "invalid_moves": 0,
+    "strategy_errors": 0,
+    "transport_errors": 0,
+    "mixed_policy_games": 0,
+    "active_games_after_drain": 0,
+    "mean_response_seconds": 0.28963791874219785,
+    "max_response_seconds": 1.0930135846138
+  },
+  "families": {
+    "bargaining": {
+      "games": 19,
+      "rating_after": 1071.6,
+      "outcomes": {
+        "agreement": 19
+      },
+      "mean_discounted_payoff_per_pot": 0.496827,
+      "exact_configuration_and_role_matches_to_granola": {
+        "buckwheat_games": 3,
+        "buckwheat_mean": 0.583229,
+        "granola_reference_mean": 0.348889,
+        "difference": 0.23434,
+        "warning": "Only three exact matched cells; matchmaking was not randomized."
+      },
+      "challenger_activations": 1,
+      "activation_result": "DiscountLatch accepted a repeated 20% nominal offer at round 4 for a discounted 17.15% pot payoff. Granola replay would reject, but its counterfactual terminal payoff is unobserved.",
+      "gate": "pass"
+    },
+    "negotiation": {
+      "games": 20,
+      "rating_after": 1013.7,
+      "outcomes": {
+        "agreement": 9,
+        "no_deal": 6,
+        "walked_away": 5
+      },
+      "complete_information": {
+        "games": 5,
+        "agreements": 5
+      },
+      "challenger_cell": {
+        "games": 1,
+        "agreements": 1,
+        "own_surplus_share": 0.55,
+        "granola_replay_counter_price": 8843.109832,
+        "buckwheat_counter_price": 8900,
+        "warning": "Buckwheat's counter was accepted; acceptance of Granola's more favorable counter is an unobserved counterfactual."
+      },
+      "identifiable_strictly_positive_surplus_games": 7,
+      "identifiable_positive_surplus_agreements": 7,
+      "identifiable_positive_surplus_no_deals": 0,
+      "gate": "pass_with_rating_warning"
+    },
+    "persuasion": {
+      "games": 16,
+      "rating_after": 1061.31,
+      "roles": {
+        "buyer": 10,
+        "seller": 6
+      },
+      "buyer": {
+        "positive_payoff_games": 7,
+        "zero_payoff_games": 2,
+        "negative_payoff_games": 1,
+        "net_payoff_across_heterogeneous_scales": 59008550,
+        "purchases": 103,
+        "purchased_high": 81,
+        "purchased_low": 22,
+        "purchased_high_rate": 0.7864077669902912,
+        "exact_public_prior_indifference_games": 2,
+        "exact_indifference_net_payoff": 14000000,
+        "largest_loss": -5000000,
+        "largest_loss_diagnosis": "Binary seller sent yes in all 20 rounds. Buckwheat bought the first 9, observed 1 high and 8 lows, then stopped. Public-prior purchase EV was strictly positive; Granola replay makes the same decisions."
+      },
+      "seller": {
+        "positive_payoff_games": 5,
+        "zero_payoff_games": 1,
+        "sales": 69,
+        "rounds": 120,
+        "sale_rate": 0.575,
+        "sold_high": 54,
+        "sold_low": 15,
+        "net_payoff_across_heterogeneous_scales": 12174000
+      },
+      "classification": {
+        "buyer_messages": 200,
+        "positive": 138,
+        "negative": 43,
+        "unknown": 19,
+        "coverage": 0.905,
+        "binary_coverage": 1.0,
+        "text_coverage": 0.8416666666666667,
+        "unknown_templates": {
+          "ordinary_unit": 14,
+          "below_usual_quality": 5
+        },
+        "revealed_template_evidence": "All five purchased below-usual-quality messages were low quality. Correct negative classification would have avoided five 1,000,000 losses in that trace; the 14 ordinary-unit qualities remained censored because Buckwheat passed."
+      },
+      "same_observation_replay_divergences": {
+        "buyer_yes_to_no": 13,
+        "seller_message": 40
+      },
+      "gate": "fail_text_coverage_below_0.95"
+    }
+  },
+  "same_observation_replay": {
+    "moves": 477,
+    "errors": 0,
+    "bargaining_divergences": 1,
+    "negotiation_divergences": 1,
+    "persuasion_divergences": 53,
+    "warning": "Replay divergence is not a counterfactual-payoff estimate because opponents could respond differently."
+  },
+  "conclusion": {
+    "bargaining": "Retain as a promising challenger, but one activation is insufficient for promotion to Granola.",
+    "negotiation": "The narrow challenger cell succeeded, but the lower rating and single activation do not establish superiority.",
+    "persuasion": "Exact-indifference downside gate passed, but the preregistered 95% text-coverage gate failed. Five below-usual-quality messages were all revealed lows, providing direct evidence for a narrow negative-template fix. Do not promote this module without freezing that revision and running another cohort.",
+    "overall": "Buckwheat is operationally valid and competitive, but the cohort does not support replacing Granola wholesale."
+  }
+}

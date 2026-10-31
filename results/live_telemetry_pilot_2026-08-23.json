@@ -1,0 +1,88 @@
+{
+  "run_type": "sequential one-game-per-family telemetry pilot",
+  "date": "2026-08-23",
+  "agent": {
+    "name": "Granola",
+    "public_id": "2389edc2-4b2c-4052-b960-0c7f9d6317ec"
+  },
+  "policy_version": "sha256:e016818d00544e25",
+  "pre_pilot_stats": {
+    "bargaining": {"display_rating": 1035.57, "games_played": 8},
+    "negotiation": {"display_rating": 1026.91, "games_played": 8},
+    "persuasion": {"display_rating": 1010.31, "games_played": 8}
+  },
+  "post_pilot_stats": {
+    "bargaining": {"display_rating": 1034.39, "games_played": 9},
+    "negotiation": {"display_rating": 1027.10, "games_played": 9},
+    "persuasion": {"display_rating": 1015.72, "games_played": 9},
+    "active_games": 0
+  },
+  "display_rating_change": {
+    "bargaining": -1.18,
+    "negotiation": 0.19,
+    "persuasion": 5.41,
+    "overall_equal_weight_average": 1.47
+  },
+  "games": [
+    {
+      "family": "bargaining",
+      "role": "player_1",
+      "opponent_type": "hidden",
+      "complete_information": false,
+      "horizon_known": false,
+      "visible_configuration": {"money_to_divide": 10000, "delta_1": 0.8},
+      "outcome": "agreement",
+      "agreed_round": 4,
+      "agreed_own_gain": 4400,
+      "own_discounted_payoff": 2252.8,
+      "normalized_payoff_by_pot": 0.22528,
+      "rating_change": -1.18
+    },
+    {
+      "family": "negotiation",
+      "role": "buyer",
+      "opponent_type": "agent",
+      "complete_information": false,
+      "horizon_known": false,
+      "visible_configuration": {"buyer_value": 15000},
+      "outcome": "agreement",
+      "agreed_round": 1,
+      "agreed_price": 12000,
+      "own_payoff": 3000,
+      "rating_change": 0.19
+    },
+    {
+      "family": "persuasion",
+      "role": "buyer",
+      "opponent_type": "agent",
+      "visible_configuration": {
+        "p": 0.8,
+        "v": 2000000,
+        "u": 0,
+        "product_price": 1000000,
+        "total_rounds": 20,
+        "seller_message_type": "text",
+        "seller_knows_buyer_values": false
+      },
+      "outcome": "completed",
+      "rounds_bought": 20,
+      "bought_high": 17,
+      "bought_low": 3,
+      "own_payoff": 14000000,
+      "rating_change": 5.41
+    }
+  ],
+  "telemetry_health": {
+    "games_persisted": 3,
+    "moves_persisted": 25,
+    "invalid_moves": 0,
+    "strategy_errors": 0,
+    "transport_errors": 0,
+    "unresolved_games": 0,
+    "mixed_policy_games": 0,
+    "mean_observation_to_response_seconds": 0.2333,
+    "max_observation_to_response_seconds": 0.3380
+  },
+  "interpretation": "All three revised families executed legally and persisted complete terminal results. Three games cannot estimate strategy quality; the family rating changes are observations, not causal performance claims.",
+  "privacy_note": "The committed artifact contains only aggregate and configuration-level diagnostics. Full player-visible states, messages, actions, responses, and terminal payloads remain in the ignored owner-readable SQLite archive."
+}

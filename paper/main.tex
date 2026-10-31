@@ -1,0 +1,291 @@
+\documentclass{article}
+
+\PassOptionsToPackage{numbers,compress}{natbib}
+\usepackage[sglblindworkshop]{neurips_2026}
+\workshoptitle{First Workshop on Interpreting Agent Behavior (IAB)}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{tabularx}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,allcolors=black}
+
+\newcommand{\agentname}{\textsc{Muesli}}
+\newcommand{\competitionname}{\textsc{Granola}}
+\newcommand{\agentid}{\texttt{2389edc2-4b2c-4052-b960-0c7f9d6317ec}}
+
+\title{MUESLI: Symbolic Reasoning for Language-Based Economic Games}
+
+\author{%
+  Harrison Oates\\
+  \textit{Australian National University, Canberra}\\
+  \texttt{harrison.oates@anu.edu.au}
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+%How much of a language-based economic game actually requires a language model?
+We present a symbolic-first GLEE agent that uses explicit models of incentives, uncertainty, and opponent behavior rather than an LLM at decision time.
+Our submissions finished 35th of 198 overall, including 10th in bargaining, 35th in persuasion, and 62nd in negotiation.
+Bargaining performed strongly because much of its strategically relevant state is exposed through structured actions, while persuasion remained competitive using Bayesian signal reasoning and lightweight deterministic language processing.
+Negotiation was the clear weakness despite a richer symbolic opponent model.
+We argue that this contrast suggests a useful boundary: symbolic methods can go far when strategic information is structurally exposed, while language models may be most valuable for interpreting information that remains latent in dialogue.
+
+
+\end{abstract}
+
+\section{Introduction}
+
+How much of a language-based economic game actually requires language?
+Our experience in the GLEE (Games in Language-based Economic Environments) competition suggests an answer: less than one might expect, but not none.
+GLEE evaluates agents in bargaining, bilateral negotiation, and repeated persuasion across 960 configurations varying horizons, information, valuations, discounting, opponent disclosure, and communication mode \citep{shapira2024glee,gleecompetition2026}.
+Although natural-language communication is available throughout these games, much of the strategically relevant state is sometimes exposed directly through structured actions.
+
+We therefore explored a deliberately \emph{symbolic-first} approach.
+We call the resulting architecture \agentname{} (\emph{Model-based Utility Estimation with Strategic Lookahead and Inference}).
+\agentname{} uses no LLM, learned policy, embedding model, or cross-game memory at decision time; instead, it reconstructs its decisions from the player-visible state and interaction history.
+LLMs were used during development to assist with coding and tuning, but not to select actions during competition play.
+
+
+This comparatively simple philosophy went surprisingly far.
+Our submissions finished 35th of 198 overall and, most notably, 10th in bargaining.
+More unexpectedly, we finished 35th in persuasion, despite persuasion being perhaps the environment in which natural language appears most intrinsically important.
+The clear weakness was bilateral negotiation, where we finished 62nd.
+Table~\ref{tab:ranks} summarizes the final positions.
+We argue that this pattern, rather than the bargaining result alone, is the most informative outcome of the submission.
+
+
+\begin{table}[t]
+  \caption{Final positions across the team's submitted agents.
+  Lower is better.}
+  \label{tab:ranks}
+  \centering
+  \small
+  \begin{tabular}{lrr}
+    \toprule
+    Scope & Position & Approx.\ top fraction \\
+    \midrule
+    Overall     & 35 / 198 & 17.7\% \\
+    Bargaining  & 10 / 198 & 5.1\% \\
+    Negotiation & 62 / 198 & 31.3\% \\
+    Persuasion  & 35 / 198 & 17.7\% \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Bargaining is unusually amenable to explicit model-based reasoning.
+A proposal reveals an exact division of the available surplus; accepting or rejecting has a clear economic consequence; discount factors determine the cost of delay; and a finite horizon, when known, makes continuation values explicit.
+The payoff-bearing actions themselves therefore expose much of the information required for strategic reasoning.
+
+Persuasion provides a more surprising example.
+Our agent does not construct arguments or use an LLM to reason about rhetoric.
+Instead, it treats persuasion primarily as an information-design problem: the seller controls the information conveyed by its recommendation, while the buyer reasons about the posterior probability of product quality.
+In free-text games, a small set of deterministic templates provides an additional linguistic signal.
+In effect, the system attempts to persuade through information structure rather than through open-ended language generation.
+
+Negotiation exposes the clearest boundary of the approach.
+Private valuations leave more of the strategic state latent, while explanations, commitments, conditional proposals, bluffing, and other semantically meaningful utterances may provide evidence that cannot be recovered from prices and accept--reject decisions alone.
+Our negotiation policy discards almost all of this information.
+Its weaker result therefore suggests a natural role for language models, but not necessarily as replacements for explicit planning.
+An LLM could instead extract evidence from dialogue or generate strategically appropriate utterances while a symbolic core continues to reason about utilities, horizons, and feasible actions, similar to existing approaches from classical planning \citep{kambhampatiPositionLLMsCant2024,correaClassicalPlanningLLMGenerated2025}.
+
+Our case study suggests exploiting explicit structure wherever the environment provides it and introducing language-based reasoning for the residual uncertainty that structured actions do not resolve.
+This paper describes the symbolic mechanisms used by the agents, examines how they changed during development, and uses their differing competition performance to identify the apparent boundary of this design philosophy.
+
+
+\section{Agent design}
+
+\subsection{Bargaining: belief-state lookahead}
+
+Let $M$ be the amount to divide and let $x\in[0,1]$ denote the share offered by proposer $i$ to receiver $j$.
+The receiver is modelled by a latent acceptance threshold $\theta$: an offer is expected to be accepted when $x\geq\theta$.
+The policy maintains a discrete posterior
+\(
+    b_t(\theta), \,\,
+    \theta\in\{0,0.01,\ldots,1\}.
+\)
+This deliberately small model makes opponent adaptation inspectable rather than hiding acceptance behavior inside a learned predictor.
+
+\paragraph{Rational and behavioral reference points.}
+
+When both discount factors are visible and the horizon is unknown, the agent uses the infinite-horizon Rubinstein receiver share as a rational reference \citep{rubinstein1982perfect},
+\[
+    x^R_j
+    =
+    \frac{\delta_j(1-\delta_i)}
+         {1-\delta_i\delta_j}.
+    \label{eq:rubinstein}
+\]
+For a known finite horizon, the reference is instead obtained by backward induction.
+The terminal receiver has continuation value zero; working backwards, rejecting makes the current receiver the next proposer, giving the recursion
+\(
+    x^R_{j,t}
+      =
+      \delta_j\left(1-x^R_{i,t+1}\right).
+\)
+
+GLEE opponents need not follow equilibrium strategies and may instead exhibit fairness preferences, bounded rationality, or heuristic behavior \citep{fehr1999theory}.
+We therefore combine the rational reference with a behavioral threshold prior, varying both the prior and the weight assigned to rational behavior according to whether the opponent is disclosed as a human, an agent, or remains hidden.
+
+\paragraph{Learning from revealed actions.}
+A rejection of an offer $r$ is evidence that $\theta>r$, but we model this noisily using a tremble probability: $P(\mathrm{reject}\ r\mid\theta)=0.92$ when $\theta>r$ and $0.08$ otherwise.
+This prevents a single anomalous action from eliminating otherwise plausible hypotheses.
+A rejection may also be \emph{contradicted}: an opponent can reject a share $r$ and later propose a division giving itself less than $r$.
+We treat such cases as weaker evidence of a reservation threshold and more plausibly as strategic delay.
+Likewise, an opponent's own demand is treated only as soft aspiration evidence, reflecting the distinction between preferences and bidding behavior in automated negotiation \citep{baarslag2016learning}.
+
+
+\paragraph{Choosing an offer.}
+
+For candidate receiver share $x$, let
+\(
+    A_t(x)=P(\theta\leq x\mid h_t)
+\)
+be the posterior probability of acceptance.
+The agent chooses
+\(
+    x_t^*
+      \in
+      \arg\max_x
+      \left[
+        A_t(x)(1-x)
+        +(1-A_t(x))C_t
+      \right],
+    \label{eq:bargaining-choice}
+\)
+where $C_t$ approximates the proposer's continuation value following rejection.
+
+The continuation model predicts the opponent's next offer from its observed proposals, falling back to the behavioral and rational models when evidence is sparse.
+For known horizons, the agent uses bounded lookahead to compare agreement with the value of rejecting and continuing the alternating-offer game; unknown horizons use a one-counteroffer approximation.
+
+Acceptance uses the same continuation model: an offer is accepted when its value exceeds the discounted value of continuing, while every strictly positive terminal offer is accepted.
+Explicit bounds keep adaptation conservative in response to rejection evidence.
+
+Incoming natural language does not affect the bargaining belief state.
+When messages are enabled, the agent instead generates deterministic, state-conditioned text explaining the selected offer using factors such as discounting, deadline pressure, and previous rejections.
+
+
+\subsection{Negotiation: expected utility under latent values}
+Negotiation also uses alternating offers, but reservation values may be private.
+We map both roles into a common own-utility space, with $u_i(p)=p-v_i$ for a seller and $u_i(p)=v_i-p$ for a buyer, so individual rationality simply requires $u_i(p)\geq0$.
+
+The policy combines time-dependent concession \citep{faratin1998negotiation} with explicit opponent modelling \citep{baarslag2016learning}.
+Let $\tau_t\in[0,1]$ denote progress through the interaction, using normalized round number for known horizons and an exponential approximation otherwise.
+Under complete information with gains from trade $S$, we use a Boulware-style reference demand
+\(
+    d_t = S\left(0.50+0.22(1-\tau_t^3)\right),
+    \label{eq:negotiation-aspiration}
+\)
+beginning near $72\%$ of the surplus and conceding more rapidly near the deadline.
+%This provides a prior rather than directly determining the offer.
+
+\paragraph{Latent concession thresholds.}
+We model a threshold $a$ such that the opponent is expected to accept offers giving us utility at most $a$.
+Under complete information, we maintain a discrete belief over $a$ around the time-dependent concession prior.
+Under private information, GLEE's discrete valuation scheme allows our own value to imply a finite set of possible opponent valuations; each induces a feasible surplus and corresponding acceptance threshold, while hypotheses with no mutually beneficial trade receive no acceptance probability.
+
+Observed actions update this belief.
+An opponent offer giving us utility $y$ supports hypotheses capable of conceding at least $y$ and raises their estimated threshold accordingly.
+Conversely, rejection of our demand $y$ provides censored evidence that the opponent's threshold lies below $y$.
+Both updates are deliberately noisy, and recent opponent concessions are also used to forecast future movement.
+
+\paragraph{Expected-payoff search.}
+For candidate own utility $y$, let
+\(
+    P_t(y)=P(a\geq y\mid h_t)
+\)
+be its acceptance probability.
+We select offers by maximizing
+\(
+    Q_t(y)
+       =
+       P_t(y)y
+       +(1-P_t(y))C_t(y),
+    \label{eq:negotiation-choice}
+\)
+where $C_t(y)$ is the discounted one-step value after rejection. Candidates include a utility grid, the concession reference, observed opponent offers, and belief breakpoints. The policy also prevents concession reversal.
+
+Incoming offers are evaluated against the certainty-equivalent value of continuing, rather than simply against the next intended counteroffer.
+The policy accepts sufficiently strong profitable offers, becomes more conservative about continuation after repeated stagnant behavior, and walks away when known valuations rule out positive-surplus trade or an uncapped negotiation remains persistently individually irrational.
+
+A small number of competition-specific guards supplement this general policy, including a symmetric-surplus bracket in uncapped complete-information games and terminal behavior that exploits the disappearance of continuation value.
+Free-text messages are deterministic renderings of the selected price: the agent does not interpret the opponent's explanations, commitments, or tone.
+This omission becomes important when interpreting the negotiation result.
+
+\subsection{Persuasion: information design without an LLM}
+
+Persuasion appears the most language-centric environment, but it also admits a compact sender--receiver interpretation \citep{kamenica2011bayesian,crawford1982strategic}.
+Let quality be high, $H$, with public probability $p$, and low, $L$, otherwise; the buyer values these outcomes at $v>u$ and pays price $c$.
+The model combines a symbolic signalling policy with a small deterministic text layer.
+
+\paragraph{Seller policy.}
+The model always recommends high-quality products and may pool low-quality products into a positive recommendation with probability $q_t$.
+For $u<c<v$, a positive signal induces posterior
+\[
+    P(H\mid+)=\frac{p}{p+(1-p)q_t},
+\]
+so buying remains profitable provided
+\(
+    q_t < \bar q
+    = \frac{p(v-c)}{(1-p)(c-u)}.
+    \label{eq:pooling-cap}
+\)
+The agent treats $\bar q$ as a \emph{reputation budget}: it initially preserves informative separation and spends more of this budget later, adapting to whether the buyer responds to recommendations and to revealed low-quality purchases.
+
+In binary games this is literal pooling, with high quality and selected low quality producing the same positive signal.
+In free-text games, we instead use fixed templates for high quality, strategically recommended low quality, and passing.
+Thus lightweight generated language provides an additional signal without requiring an LLM.
+
+\paragraph{Buyer policy.}
+The agent maps incoming messages deterministically to
+\(
+    \sigma(m)\in\{+,-,?\},
+\)
+representing positive, negative, and ambiguous signals.
+For intermediate prices, buying requires the estimated posterior probability of high quality to exceed
+\(
+    \lambda=\frac{c-u}{v-u}.
+\)
+Negative signals are rejected and ambiguous signals fall back to the public prior.
+For positive signals, we estimate $P(H\mid+)$ from the observed frequency of positive recommendations and calibrate this estimate using qualities revealed after purchases.
+Because quality is observed only following purchase, these outcomes are treated as selected evidence rather than as a complete sample.
+
+The buyer purchases when the resulting posterior exceeds $\lambda$, with a small bounded exploration allowance early in long interactions.
+At exact public-prior indifference, the agent is deliberately conservative and requires additional evidence that positive recommendations are informative.
+
+\section{Discussion}
+
+\paragraph{Development process.}
+Development primarily improved how the agents represented uncertainty.
+Bargaining moved from treating rejections as hard reservation bounds to distinguishing reservation, aspiration, and strategic delay; negotiation evolved from time-dependent concession to explicit reasoning over latent valuations and opponent thresholds.
+Persuasion instead benefited from lightweight language: we added strategically distinct templates and conservative text classification to an otherwise symbolic signalling policy.
+
+\paragraph{Results.}
+The competition results suggest that the usefulness of language depends less on whether communication is present than on how much strategically relevant information is already exposed by structured actions.
+Bargaining makes allocations and continuation consequences explicit, while persuasion can be treated substantially as a problem of signals and beliefs.
+Negotiation leaves more latent: the same price may reflect different constraints, intentions, or bargaining strategies.
+This motivates hybrid agents in which language models extract belief-relevant information or generate strategic utterances while explicit models retain responsibility for economic reasoning.
+
+\paragraph{Agent Behavior Analysis.}
+The policies enforce simple behavioral invariants: bargaining responds to discounting and observed actions without overcommitting to contradictory evidence; negotiation preserves individual rationality and monotone concession; and persuasion bounds strategic pooling and treats ambiguous language conservatively.
+Because adaptation is reconstructed from the visible state and history, decisions are replayable and the policy's behavioral invariants can be directly tested.
+
+
+\paragraph{Limitations and reproducibility.}
+Leaderboard results are observational and cannot isolate the effect of language from differences between games or policy choices.
+The agents also rely on approximate opponent models, bounded lookahead, and competition-specific heuristics.
+We will release the competition code publicly upon acceptance.
+A natural follow-up is to compare negotiation with and without language-based opponent modelling.
+
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

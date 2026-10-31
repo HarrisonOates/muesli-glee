@@ -1,0 +1,94 @@
+{
+  "run_type": "telemetry-backed development cohort",
+  "date": "2026-08-23",
+  "agent": {
+    "name": "Granola",
+    "public_id": "2389edc2-4b2c-4052-b960-0c7f9d6317ec"
+  },
+  "policy_versions": [
+    {
+      "version": "sha256:e016818d00544e25",
+      "games": 23,
+      "description": "family-specific posterior and horizon policies"
+    },
+    {
+      "version": "sha256:7ab70e7b272f3274",
+      "games": 2,
+      "description": "same policies with a phrase-scoped persuasion negation fix"
+    }
+  ],
+  "pre_cohort_stats": {
+    "bargaining": {"display_rating": 1035.57, "games_played": 8},
+    "negotiation": {"display_rating": 1026.91, "games_played": 8},
+    "persuasion": {"display_rating": 1010.31, "games_played": 8}
+  },
+  "post_cohort_stats": {
+    "bargaining": {"display_rating": 1052.68, "games_played": 15},
+    "negotiation": {"display_rating": 1033.45, "games_played": 17},
+    "persuasion": {"display_rating": 1008.04, "games_played": 17},
+    "active_games": 0
+  },
+  "display_rating_change": {
+    "bargaining": 17.11,
+    "negotiation": 6.54,
+    "persuasion": -2.27,
+    "overall_equal_weight_average": 7.13
+  },
+  "family_outcomes": {
+    "bargaining": {
+      "games": 7,
+      "outcomes": {"agreement": 7},
+      "review": "No retune: 26 of 30 rejections were ex-post beneficial or payoff-equal; the four costly rejections came from one opponent."
+    },
+    "negotiation": {
+      "games": 9,
+      "outcomes": {"agreement": 5, "no_deal": 2, "walked_away": 2},
+      "review": "All identifiable strictly positive-surplus cases traded; capped failures were provable or strongly inferred nontrade."
+    },
+    "persuasion": {
+      "games": 9,
+      "outcomes": {"completed": 9},
+      "review": "Two buyer traces exposed the same negated-text classification bug. Exact replays motivated a parser-only fix; seller mixing was unchanged."
+    }
+  },
+  "parser_fix_validation": {
+    "policy_version": "sha256:7ab70e7b272f3274",
+    "games": 2,
+    "moves": 40,
+    "buyer_game": {
+      "prior_high_probability": 0.5,
+      "rounds_bought": 11,
+      "bought_high": 4,
+      "bought_low": 7,
+      "own_payoff": 10000.0
+    },
+    "seller_game": {
+      "prior_high_probability": 0.5,
+      "rounds_bought": 13,
+      "bought_high": 8,
+      "bought_low": 5,
+      "own_payoff": 130000.0
+    },
+    "invalid_moves": 0,
+    "errors": 0,
+    "display_rating_change": -3.64
+  },
+  "telemetry_health": {
+    "games_persisted": 25,
+    "moves_persisted": 277,
+    "invalid_moves": 0,
+    "strategy_errors": 0,
+    "transport_errors": 0,
+    "unresolved_games": 0,
+    "mixed_policy_games": 0,
+    "mean_observation_to_response_seconds": 0.2682,
+    "max_observation_to_response_seconds": 0.6201
+  },
+  "offline_verification": {
+    "tests": 156,
+    "randomized_states": 12000,
+    "guard_violations": 0
+  },
+  "interpretation": "The cohort validates operation and reveals replayable heuristic failures. Display ratings are configuration-relative observations from small, non-random cells and are not causal estimates of policy quality.",
+  "privacy_note": "This committed artifact omits raw messages, game identifiers, opponent names, and hidden transcripts. Full player-visible traces remain in the ignored owner-readable SQLite archive."
+}

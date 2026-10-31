@@ -1,0 +1,84 @@
+{
+  "agent_name": "Granola",
+  "date": "2026-08-29",
+  "candidate": "CompetitiveFloor",
+  "policy_version": "sha256:58a95e3ea85d5942",
+  "status": "rejected_after_extended_checkpoint",
+  "diagnosis": {
+    "mechanism": "GLEE negotiation rating tracks relative payoff wins, losses, and no-deal ties; accepting any positive utility can therefore volunteer a rating loss.",
+    "recent_live_cohort": {
+      "wins": 3,
+      "losses": 7,
+      "ties": 8,
+      "rating_change": -13.38
+    },
+    "archived_top_2200_public_multi_agreement_own_share": {
+      "accepted_own_offer_median": 0.275,
+      "accepted_opponent_offer_median": 0.261
+    }
+  },
+  "change": {
+    "public_values": "Accept and propose no worse than 50% of known positive surplus.",
+    "private_values": "Use 50% of the largest surplus compatible with Granola's documented valuation-grid cell as the competitive floor.",
+    "unknown_grid_fallback": "Use 50% of the existing scale-free private surplus ceiling.",
+    "terminal_leverage": "Retain the 99% public terminal demand and the disclosed fairness-punisher exception.",
+    "objective": "Never turn a no-deal draw into a knowingly losing agreement."
+  },
+  "archive_acceptance_replay": {
+    "accepted_losses_blocked": {
+      "public": 188,
+      "private": 87,
+      "total": 275
+    },
+    "public_wins_preserved": 28,
+    "private_wins_preserved": 64,
+    "private_uncertain_wins_forgone": 34,
+    "interpretation": "The floor blocks every archived accepted payoff loss and every public loss without rejecting a public win. Private-value safety is conservative because the opponent's exact reservation value is hidden."
+  },
+  "live_checkpoint": {
+    "rating_before": 1762.50,
+    "rating_after": 1769.10,
+    "rating_change": 6.60,
+    "games_before": 2792,
+    "games_after": 2799,
+    "games_added": 7,
+    "wins": 2,
+    "losses": 0,
+    "ties": 5,
+    "outcomes": {
+      "agreement": 2,
+      "no_deal": 3,
+      "walked_away": 2
+    },
+    "active_games_after_drain": 0
+  },
+  "extended_checkpoint": {
+    "rating_before": 1769.10,
+    "rating_after": 1748.40,
+    "rating_change": -20.70,
+    "games_before": 2799,
+    "games_after": 2810,
+    "games_added": 11,
+    "wins": 1,
+    "losses": 0,
+    "ties": 10,
+    "outcomes": {
+      "agreement": 2,
+      "no_deal": 4,
+      "walked_away": 5
+    },
+    "interpretation": "The no-loss invariant did not improve rating: nine zero-payoff outcomes and one equal-payoff agreement outweighed one winning agreement. The candidate was rolled back immediately."
+  },
+  "rollback": {
+    "restored_policy": "Expected-utility acceptance with StrictGain private terminal buffering, Deadline Edge public terminal leverage, and existing throughput guards.",
+    "reason": "The extended live evidence contradicts promotion of the competitive floor."
+  },
+  "verification": {
+    "tests_passed": 231,
+    "ruff": "passed",
+    "randomized_states": 12000,
+    "negotiation_isolated_states": 4000,
+    "guard_violations": 0
+  },
+  "remaining_goal": "A fresh official negotiation rating of at least 2000 has not yet been reached; the current official rating is 1748.40."
+}

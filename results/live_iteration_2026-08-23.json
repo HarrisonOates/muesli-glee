@@ -1,0 +1,55 @@
+{
+  "run_type": "bounded live iteration before move-level telemetry",
+  "date": "2026-08-23",
+  "agent": {
+    "name": "Granola",
+    "public_id": "2389edc2-4b2c-4052-b960-0c7f9d6317ec"
+  },
+  "policy_label": "adaptive-family-policies-v1",
+  "comparison_baseline": "results/live_smoke_2026-08-23.json",
+  "games_added": {
+    "bargaining": 5,
+    "negotiation": 5,
+    "persuasion": 5
+  },
+  "pre_run_stats": {
+    "bargaining": {"display_rating": 1010.45, "games_played": 3},
+    "negotiation": {"display_rating": 1006.74, "games_played": 3},
+    "persuasion": {"display_rating": 998.75, "games_played": 3}
+  },
+  "post_run_stats": {
+    "bargaining": {"display_rating": 1035.57, "games_played": 8},
+    "negotiation": {"display_rating": 1026.91, "games_played": 8},
+    "persuasion": {"display_rating": 1010.31, "games_played": 8},
+    "active_games": 0
+  },
+  "display_rating_change": {
+    "bargaining": 25.12,
+    "negotiation": 20.17,
+    "persuasion": 11.56,
+    "overall_equal_weight_average": 18.95
+  },
+  "shrinkage_adjusted_diagnostics": {
+    "method": "Invert display = 1000 + (raw - 1000) * g / (g + 30). Approximate the five new game ratings with a constant 1% early-player update rate.",
+    "bargaining": {
+      "raw_before": 1114.95,
+      "raw_after": 1168.96,
+      "approximate_mean_new_game_rating": 2216.9,
+      "approximate_adjusted_percentile": 0.5271
+    },
+    "negotiation": {
+      "raw_before": 1074.14,
+      "raw_after": 1127.82,
+      "approximate_mean_new_game_rating": 2169.5,
+      "approximate_adjusted_percentile": 0.5212
+    },
+    "persuasion": {
+      "raw_before": 986.25,
+      "raw_after": 1048.97,
+      "approximate_mean_new_game_rating": 2266.0,
+      "approximate_adjusted_percentile": 0.5333
+    }
+  },
+  "interpretation": "All family ratings improved, but five new games per family cannot isolate policy quality from opponent, role, and configuration variance.",
+  "observability_note": "This run predated the SQLite telemetry layer. The platform stats are preserved, but completed game IDs and full transcripts were not retained and cannot be reconstructed from the aggregate stats endpoint. All subsequent runs persist move-level data locally."
+}

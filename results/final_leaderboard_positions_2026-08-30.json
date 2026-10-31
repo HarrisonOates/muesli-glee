@@ -1,0 +1,13 @@
+{
+  "description": "Final GLEE leaderboard positions reported by the account owner for the competition paper.",
+  "date": "2026-08-30",
+  "leaderboard_size": 198,
+  "scope": "Best final positions across the team's submitted agents under one competition account.",
+  "positions": {
+    "overall": 35,
+    "bargaining": 10,
+    "negotiation": 62,
+    "persuasion": 35
+  },
+  "interpretation": "Bargaining was the team's strongest family; negotiation was the relative weakness. Cross-family ranks are descriptive and do not isolate a causal effect of language use."
+}

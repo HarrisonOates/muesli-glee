@@ -1,0 +1,104 @@
+{
+  "agent_name": "Granola",
+  "date": "2026-08-29",
+  "candidate": "StrictGain",
+  "status": "promoted_after_positive_live_cohort",
+  "baseline": {
+    "policy_version": "sha256:fe8944c6aebdfcf8",
+    "negotiation_rating_before": 1848.07,
+    "negotiation_games_before": 2612,
+    "negotiation_rating_after": 1810.11,
+    "negotiation_games_after": 2677,
+    "rating_change": -37.96,
+    "games_added": 65,
+    "deadline_edge_activations": 0,
+    "interpretation": "The cohort is evidence about the unchanged policy cells, not Deadline Edge. Private single-round seller finished 0-for-8 while every sampled complete-information game reached agreement."
+  },
+  "candidate_policy_version": "sha256:c9523c384c7af0ae",
+  "promoted_policy_version": "sha256:8bc5240712e8aeda",
+  "strict_gain_change": {
+    "scope": "Positive-utility private-value terminal proposals only.",
+    "old_action": "Offer exactly at the expected-payoff-maximizing latent valuation breakpoint.",
+    "new_action": "Retain 99% of the chosen utility and leave the marginal compatible receiver a strict-positive 1% buffer.",
+    "unchanged": [
+      "zero-utility and individually irrational configurations",
+      "private nonterminal proposals",
+      "all decision actions",
+      "all complete-information proposals"
+    ]
+  },
+  "archive_evidence": {
+    "private_single_round_seller_games": 319,
+    "positive_utility_offer_games": 238,
+    "positive_utility_offer_agreements": 60,
+    "historical_acceptance_rate": 0.252101,
+    "candidate_payoff_retention_if_accepted": 0.99,
+    "candidate_break_even_acceptance_rate": 0.254648,
+    "absolute_acceptance_increase_needed": 0.002547,
+    "mechanism": "At an exact grid breakpoint the marginal compatible opponent earns zero. The buffer makes that same latent configuration strictly profitable while reducing Granola's conditional payoff by one percent."
+  },
+  "throughput_guard": {
+    "private_uncapped": {
+      "scope": "Private uncapped decisions after ten consecutive non-profitable incoming offers.",
+      "action": "Walk away rather than occupy a worker until the platform safety cap.",
+      "archive_qualified_games": 61,
+      "later_profitable_offers": 0,
+      "later_positive_outcomes": 0
+    },
+    "public_uncapped": {
+      "scope": "Complete-information uncapped decisions after ten consecutive positive, non-improving incoming offers.",
+      "action": "Accept the positive offer rather than repeat a rejected 55/45 counter until the platform safety cap.",
+      "archive_qualified_games": 6,
+      "later_agreements": 0,
+      "later_better_outcomes": 0
+    }
+  },
+  "live_cohort": {
+    "policy_version": "sha256:c9523c384c7af0ae",
+    "negotiation_rating_before": 1810.11,
+    "negotiation_rating_after": 1815.51,
+    "rating_change": 5.4,
+    "games_before": 2677,
+    "games_after": 2746,
+    "games_added": 69,
+    "private_positive_utility_terminal_offers": 9,
+    "private_positive_utility_terminal_agreements": 3,
+    "private_terminal_acceptance_rate": 0.333333,
+    "deadline_edge_offers": 4,
+    "deadline_edge_agreements": 4,
+    "deadline_edge_acceptance_rate": 1.0,
+    "invalid_moves": 0,
+    "strategy_errors": 0
+  },
+  "extended_checkpoint": {
+    "policy_version": "sha256:1c65c28375b811e3",
+    "negotiation_rating_before": 1815.51,
+    "negotiation_rating_after": 1775.88,
+    "games_added": 28,
+    "rating_change": -39.63,
+    "public_stall_activations": 0,
+    "private_capped_seller_games": 5,
+    "private_capped_seller_agreements": 0,
+    "interpretation": "The run was stopped at its adverse checkpoint. The public-stall addition did not activate; the losing slice used otherwise unchanged private capped behavior and all five terminal incoming offers were below Granola's reservation value."
+  },
+  "fairness_exception": {
+    "scope": "Complete-information terminal offer against the disclosed opponent name 'punish'.",
+    "action": "Demand 50% rather than 99% of known surplus.",
+    "evidence": "Deadline Edge was accepted in seven of eight resolved games. The sole rejection was punish, which had previously completed a public uncapped agreement at Granola's 45% share.",
+    "unchanged_opponents": "Every other disclosed or hidden opponent retains the 99% terminal demand."
+  },
+  "verification": {
+    "tests_passed": 231,
+    "ruff": "passed",
+    "randomized_states": 12000,
+    "guard_violations": 0
+  },
+  "live_gate": {
+    "initial_sdk_completions": 30,
+    "rollback_if": [
+      "any invalid move or strategy error",
+      "private single-round positive-utility seller acceptance materially underperforms the 25.21% archive baseline",
+      "configuration-stratified rating or payoff evidence rejects the one-percent buffer's break-even threshold"
+    ]
+  }
+}

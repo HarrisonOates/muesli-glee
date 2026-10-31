@@ -1,0 +1,73 @@
+{
+  "agent_name": "Buckwheat",
+  "status": "offline_candidate_not_yet_registered_or_run",
+  "date": "2026-08-23",
+  "purpose": "Preregistered adversarial challenger to Granola; not a claim of improved leaderboard performance.",
+  "account_constraint": "Create under the existing GLEE account. Do not create a second account.",
+  "policy_fingerprints": {
+    "granola": "sha256:7ab70e7b272f3274",
+    "challenger": "sha256:1da5f4f3d02cd86d"
+  },
+  "frozen_changes": {
+    "bargaining": {
+      "name": "DiscountLatch",
+      "scope": "Only discounted players facing an exactly repeated, positive opponent offer.",
+      "change": "Accept the repeated offer; otherwise delegate to Granola.",
+      "hypothesis": "Avoid a demonstrated class of discount losses without weakening Granola's successful proposal policy."
+    },
+    "negotiation": {
+      "name": "NashFloorBracket",
+      "scope": "Complete-information, strictly positive-surplus, explicitly unknown and uncapped horizons only.",
+      "change": "Open at 55% of surplus, accept at 45%, and bracket rejected demands against incoming offers; otherwise delegate to Granola.",
+      "hypothesis": "Increase surplus capture in the only cell where waiting has no documented hard deadline."
+    },
+    "persuasion": {
+      "name": "TemplateBayesExactGuard",
+      "scope": "Text templates and exact public-prior buyer indifference; binary and all other economic logic delegate to Granola.",
+      "change": "Treat high-grade as positive, serviceable/nothing-fancy as weak, require two negative exposures before an exact-tie positive purchase, and stop after a purchased positive low.",
+      "hypothesis": "Close the observed template-coverage gap and reduce the largest buyer downside tail while preserving seller pooling probabilities."
+    }
+  },
+  "evaluation": {
+    "sequence": [
+      "bargaining",
+      "negotiation",
+      "persuasion"
+    ],
+    "games_per_family": 10,
+    "concurrency": 1,
+    "granola_frozen": true,
+    "simultaneous_primary_comparison_runs": false,
+    "primary_metrics": [
+      "normalized own payoff within role and configuration strata",
+      "agreement or efficient-trade rate",
+      "persuasion buyer downside and seller conversion by signal class"
+    ],
+    "secondary_metric": "GLEE rating",
+    "no_tuning_until_all_three_cohorts_close": true
+  },
+  "gates": {
+    "bargaining": "Agreement rate at least 90%, with mean normalized payoff no more than 5 percentage points below matched Granola strata.",
+    "negotiation": "No identifiable missed positive-surplus trade and no-deal rate at most 15% in eligible positive-surplus games.",
+    "persuasion": "Exact-indifference buyer outcomes nonnegative in aggregate and text classification coverage at least 95%."
+  },
+  "offline_verification": {
+    "randomized_states": 12000,
+    "violations": 0,
+    "archived_moves_replayed": 683,
+    "replay_errors": 0,
+    "archive_divergences": {
+      "bargaining": 4,
+      "negotiation": 5,
+      "persuasion": 93
+    },
+    "tests_passed": 203,
+    "ruff": "passed",
+    "launcher_shell_syntax": "passed"
+  },
+  "interpretation_limits": [
+    "Archive replay measures action divergence, not counterfactual payoff.",
+    "Matchmaking is not randomized, so unmatched rating changes are not causal estimates.",
+    "A challenger module is retained only after family-level gates and trace review, not because it wins a single game."
+  ]
+}
