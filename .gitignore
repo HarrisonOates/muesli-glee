@@ -28,3 +28,6 @@ paper/*.synctex.gz
 # Internal working notes
 HANDOVER.md
 SUBMISSION_CHECKLIST.md
+
+# Paper source is kept out of the code release
+paper/

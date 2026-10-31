@@ -47,7 +47,6 @@ src/muesli_agent/
 scripts/           offline audit, telemetry analysis, profile comparison, simulators
 tests/             unit and behavioral-invariant tests
 results/           aggregate evidence used in the paper (no game transcripts)
-paper/             LaTeX source and PDF
 ```
 
 ## Installation
@@ -97,7 +96,7 @@ aggregate, de-identified summaries appear in `results/`. Analyse your own archiv
 
 ## Paper
 
-Build the paper with `make paper`; the compiled PDF is [`paper/main.pdf`](paper/main.pdf).
+The paper is available from [harrisonoates.com](https://harrisonoates.com/papers/iabneurips2026muesli/).
 
 ```bibtex
 @inproceedings{oates2026muesli,
